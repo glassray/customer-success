@@ -45,6 +45,9 @@ async function classify(input: NewTicketInput): Promise<TicketClassification> {
   const { object } = await generateObject({
     model: "anthropic/claude-sonnet-5",
     schema: classificationSchema,
+    // Emit an OpenTelemetry span for this model call so it shows up in LangSmith
+    // (exported by the root instrumentation.ts). No-op unless telemetry is on.
+    experimental_telemetry: { isEnabled: true, functionId: "classify-ticket" },
     prompt:
       "You triage inbound customer support tickets for Vercel (the deployment platform).\n" +
       "Classify this ticket.\n\n" +
