@@ -9,3 +9,11 @@ node_modules
 dist
 .DS_Store
 *.tsbuildinfo
+/.swc
+
+# local ticket data (legacy file store)
+.data
+.data/
+
+# env is documented in the README, not a committed template (covered by .env* above too)
+.env.example

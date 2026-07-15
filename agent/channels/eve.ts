@@ -1,15 +1,23 @@
 import { eveChannel } from "eve/channels/eve";
-import { localDev, placeholderAuth, vercelOidc } from "eve/channels/auth";
+import { localDev, none, vercelOidc } from "eve/channels/auth";
+import { setContinuation } from "../../lib/store";
 
+/**
+ * The customer-facing web channel (drives `useEveAgent` in the browser).
+ *
+ * We capture the current continuation token on every completed message and
+ * park, keyed by session id. That token is the resume handle the two-way
+ * handoff uses to relay a human's reply back into the customer's live session.
+ *
+ * `none()` makes this a public demo surface. Replace with real auth (Clerk,
+ * Auth.js, your own verifier) before shipping anything real.
+ */
 export default eveChannel({
-  auth: [
-    // Lets the eve TUI and your Vercel deployments reach the deployed agent.
-    vercelOidc(),
-    // Open on localhost for `eve dev` and the REPL; ignored in production.
-    localDev(),
-    // This placeholder will not allow browser requests in production.
-    // Replace it with your app's auth provider, like Auth.js or Clerk,
-    // or use none() for a public demo.
-    placeholderAuth(),
-  ],
+  auth: [vercelOidc(), localDev(), none()],
+  events: {
+    "message.completed"(_eventData, channel, ctx) {
+      const token = channel.continuationToken;
+      if (token) void setContinuation(ctx.session.id, token);
+    },
+  },
 });

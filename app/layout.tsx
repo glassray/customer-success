@@ -20,8 +20,8 @@ const mono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "customer-success",
-  description: "A Next.js starter for eve agents with AI Elements.",
+  title: "Vercel Support · eve",
+  description: "Customer support agent for Vercel, built on eve. Triage, log, resolve, escalate.",
 };
 
 export default function RootLayout({ children }: { readonly children: ReactNode }) {

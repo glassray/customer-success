@@ -16,8 +16,9 @@ import {
 } from "@/components/ai-elements/prompt-input";
 import { cn } from "@/lib/utils";
 import { AgentMessage } from "./agent-message";
+import { SiteNav } from "./site-nav";
 
-const AGENT_NAME = "customer-success";
+const AGENT_NAME = "Vercel Support";
 
 type AgentStatus = ReturnType<typeof useEveAgent>["status"];
 
@@ -60,14 +61,10 @@ export function AgentChat() {
 
   return (
     <main className="flex h-dvh flex-col overflow-hidden bg-background text-foreground">
-      {isEmpty ? null : (
-        <header className="flex h-14 shrink-0 items-center justify-center gap-3 pl-4 pr-2">
-          <span className="flex min-w-0 items-center gap-2">
-            <span className="truncate text-muted-foreground text-sm">{AGENT_NAME}</span>
-            <StatusDot status={agent.status} />
-          </span>
-        </header>
-      )}
+      <header className="flex h-14 shrink-0 items-center justify-between gap-3 px-4">
+        <SiteNav />
+        <StatusDot status={agent.status} />
+      </header>
 
       {agent.error ? (
         <div className="mx-auto w-full max-w-3xl shrink-0 px-4 pt-2 sm:px-6">
@@ -111,6 +108,10 @@ export function AgentChat() {
         {isEmpty ? (
           <div className="flex flex-col items-center gap-3 text-center">
             <h1 className="font-medium text-5xl tracking-tighter">{AGENT_NAME}</h1>
+            <p className="max-w-sm text-balance text-muted-foreground">
+              Report a bug or share feedback about Vercel. Eve triages every ticket and loops in a
+              human when it needs one.
+            </p>
           </div>
         ) : null}
         <div className="w-full">{composer}</div>
